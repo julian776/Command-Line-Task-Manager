@@ -6,6 +6,16 @@ type Task struct {
 	isCompleted bool
 }
 
+func (task Task) String() string {
+	taskString := "\n" + task.Title + "\n" + task.Description + "\n"
+	if task.isCompleted {
+		taskString += "Completed"
+	} else {
+		taskString += "Not completed"
+	}
+	return taskString
+}
+
 func (task *Task) SetComplete() {
 	task.isCompleted = true
 }

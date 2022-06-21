@@ -2,15 +2,15 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
-	"toDoList/commands"
+	"toDoList/helpers"
 )
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
+	router := helpers.Setup()
 	for true {
-		command := commands.ReadCommand(scanner)
-		fmt.Println(command)
+		command := helpers.ReadCommand(scanner)
+		router.Router(command)
 	}
 }
