@@ -24,7 +24,8 @@ func (router Router) Router(command string) {
 			fmt.Println(task)
 		}
 	case "add":
-		_, err := router.tasksService.AddTask(operation[1], operation[2])
+		description := strings.Join(operation[2:], " ")
+		_, err := router.tasksService.AddTask(operation[1], description)
 		if err != nil {
 			fmt.Println(err)
 		} else {
