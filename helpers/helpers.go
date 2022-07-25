@@ -14,6 +14,7 @@ func ReadCommand(scanner *bufio.Scanner) string {
 
 func Setup() router.Router {
 	repository := repositories.TasksRepository{}
+	repository.SetupRepository()
 	// Setup Tasks Service
 	service := services.TasksService{}
 	service.SetupRepository(repository)

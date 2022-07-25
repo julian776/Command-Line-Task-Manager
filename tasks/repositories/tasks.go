@@ -9,6 +9,10 @@ type TasksRepository struct {
 	tasks map[string]models.Task
 }
 
+func (repo *TasksRepository) SetupRepository() {
+	repo.tasks = make(map[string]models.Task)
+}
+
 func (repo TasksRepository) FindByTitle(title string) (models.Task, error) {
 	if task, ok := repo.tasks[title]; ok {
 		return task, nil

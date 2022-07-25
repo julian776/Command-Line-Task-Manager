@@ -11,6 +11,21 @@ type TasksService struct {
 	tasksRepository repositories.TasksRepository
 }
 
+func (service TasksService) AddTask(title string, desc string) (models.Task, error) {
+	if title == "" {
+		return models.Task{}, errors.New("Not possible to create a task with empty title")
+	}
+	if desc == "" {
+		return models.Task{}, errors.New("Not possible to create a task with empty description")
+	}
+	taskToAdd := models.Task{
+		Title:       title,
+		Description: desc,
+	}
+	service.tasksRepository.Save(taskToAdd)
+	return models.Task{}, nil
+}
+
 func (service TasksService) UpdateDescription(title string, desc string) (string, error) {
 	task, err := service.tasksRepository.FindByTitle(title)
 	if err != nil {
@@ -25,9 +40,9 @@ func (service TasksService) UpdateDescription(title string, desc string) (string
 func (service TasksService) FindTask(title string) (models.Task, error) {
 	task, err := service.tasksRepository.FindByTitle(title)
 	if err != nil {
-		return task, nil
-	} else {
 		return models.Task{}, err
+	} else {
+		return task, nil
 	}
 }
 
