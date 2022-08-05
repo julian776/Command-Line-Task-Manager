@@ -10,26 +10,22 @@ type Router struct {
 	tasksService services.TasksService
 }
 
+type fn func([]string) (string, error)
+
 func (router Router) Router(command string) {
 	operation := strings.Split(command, " ")
+	routes := map[string]fn{
+		"ls":   router.tasksService.PrintAllTasks,
+		"show": router.tasksService.FindTask,
+		"add":  router.tasksService.AddTask,
+	}
 
-	switch operation[0] {
-	case "ls":
-		router.tasksService.PrintAllTasks()
-	case "show":
-		task, err := router.tasksService.FindTask(operation[1])
+	if value, exists := routes[operation[0]]; exists {
+		response, err := value(operation[1:])
 		if err != nil {
 			fmt.Println(err)
 		} else {
-			fmt.Println(task)
-		}
-	case "add":
-		description := strings.Join(operation[2:], " ")
-		_, err := router.tasksService.AddTask(operation[1], description)
-		if err != nil {
-			fmt.Println(err)
-		} else {
-			fmt.Println("Added new task")
+			fmt.Println(response)
 		}
 	}
 }
