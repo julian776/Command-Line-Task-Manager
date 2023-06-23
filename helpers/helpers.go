@@ -2,9 +2,12 @@ package helpers
 
 import (
 	"bufio"
+	"errors"
+	"fmt"
+	"os"
 	"toDoList/router"
-	"toDoList/tasks/repositories"
 	"toDoList/tasks/services"
+	"toDoList/tasks/settings"
 )
 
 func ReadCommand(scanner *bufio.Scanner) string {
@@ -12,12 +15,28 @@ func ReadCommand(scanner *bufio.Scanner) string {
 	return scanner.Text()
 }
 
+const (
+	loadError = "can not load toDoList"
+)
+
 func Setup() router.Router {
-	repository := repositories.TasksRepository{}
-	repository.SetupRepository()
+	settings, err := settings.LoadSettings()
+	if err != nil {
+		fmt.Println(loadError)
+	}
+
+	// Verify tasks file exists
+	if _, err := os.Stat(settings.FileName); errors.Is(err, os.ErrNotExist) {
+		file, err := os.Create(settings.FileName)
+		if err != nil {
+			fmt.Println(loadError)
+		}
+		file.Write([]byte("{}"))
+	}
+
 	// Setup Tasks Service
 	service := services.TasksService{}
-	service.SetupRepository(repository)
+	service.NewTasksService(settings)
 	// Setup Router
 	router := router.Router{}
 	router.SetupService(service)

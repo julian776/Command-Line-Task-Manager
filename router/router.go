@@ -2,7 +2,6 @@ package router
 
 import (
 	"fmt"
-	"strings"
 	"toDoList/tasks/services"
 )
 
@@ -12,8 +11,7 @@ type Router struct {
 
 type fn func([]string) (string, error)
 
-func (router Router) Router(command string) {
-	operation := strings.Split(command, " ")
+func (router Router) Router(operation []string) {
 	routes := map[string]fn{
 		"ls":   router.tasksService.PrintAllTasks,
 		"show": router.tasksService.FindTask,

@@ -6,60 +6,70 @@ import (
 	"strings"
 	"toDoList/tasks/models"
 	"toDoList/tasks/repositories"
+	"toDoList/tasks/settings"
 )
 
 type TasksService struct {
-	tasksRepository repositories.TasksRepository
+	settings settings.Settings
 }
 
-func (service TasksService) AddTask(params []string) (string, error) {
+const (
+	errorStr = "ERROR"
+)
+
+func (s *TasksService) AddTask(params []string) (string, error) {
 	title := params[0]
 	desc := strings.Join(params[1:], " ")
 	if title == "" {
-		return "ERROR: ", errors.New("Not possible to create a task with empty title")
+		return errorStr, errors.New("not possible to create a task with empty title")
 	}
 	if desc == "" {
-		return "ERROR: ", errors.New("Not possible to create a task with empty description")
+		return errorStr, errors.New("not possible to create a task with empty description")
 	}
 	taskToAdd := models.Task{
 		Title:       title,
 		Description: desc,
+		IsCompleted: false,
 	}
-	service.tasksRepository.Save(taskToAdd)
+	repositories.Save(s.settings.FileName, taskToAdd)
 	return "Task created", nil
 }
 
-func (service TasksService) UpdateDescription(params []string) (string, error) {
+func (s *TasksService) UpdateDescription(params []string) (string, error) {
 	title := params[0]
 	desc := strings.Join(params[1:], " ")
-	task, err := service.tasksRepository.FindByTitle(title)
+	task, err := repositories.FindByTitle(s.settings.FileName, title)
 	if err != nil {
 		task.ChangeDescription(desc)
-		service.tasksRepository.Save(task)
+		repositories.Save(s.settings.FileName, task)
 		return "Task Updated", nil
 	} else {
-		return "", errors.New("Can not find a task with tittle " + title)
+		return errorStr, errors.New("Can not find a task with tittle " + title)
 	}
 }
 
-func (service TasksService) FindTask(params []string) (string, error) {
+func (s *TasksService) FindTask(params []string) (string, error) {
 	fmt.Println(params[0])
-	task, err := service.tasksRepository.FindByTitle(params[0])
+	task, err := repositories.FindByTitle(s.settings.FileName, params[0])
 	if err != nil {
-		return "ERROR: ", err
+		return "", err
 	} else {
 		return task.String(), nil
 	}
 }
 
-func (service TasksService) PrintAllTasks(_ []string) (string, error) {
-	tasks := service.tasksRepository.FindAll()
+func (s *TasksService) PrintAllTasks(_ []string) (string, error) {
+	tasks, err := repositories.FindAll(s.settings.FileName)
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
 	for _, task := range tasks {
 		fmt.Println(task)
 	}
 	return "", nil
 }
 
-func (service *TasksService) SetupRepository(repository repositories.TasksRepository) {
-	service.tasksRepository = repository
+func (s *TasksService) NewTasksService(settings settings.Settings) {
+	s.settings = settings
 }

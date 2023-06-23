@@ -1,14 +1,14 @@
 package models
 
 type Task struct {
-	Title       string
-	Description string
-	isCompleted bool
+	Title       string `json:"title,omitempty"`
+	Description string `json:"description,omitempty"`
+	IsCompleted bool   `json:"isCompleted,omitempty"`
 }
 
 func (task Task) String() string {
 	taskString := "\n" + task.Title + "\n" + task.Description + "\n"
-	if task.isCompleted {
+	if task.IsCompleted {
 		taskString += "Completed"
 	} else {
 		taskString += "Not completed"
@@ -17,11 +17,11 @@ func (task Task) String() string {
 }
 
 func (task *Task) SetComplete() {
-	task.isCompleted = true
+	task.IsCompleted = true
 }
 
 func (task *Task) SetUncomplete() {
-	task.isCompleted = false
+	task.IsCompleted = false
 }
 
 func (task *Task) ChangeDescription(newDescription string) string {

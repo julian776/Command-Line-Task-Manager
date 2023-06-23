@@ -1,30 +1,59 @@
 package repositories
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
+	"io/fs"
+	"os"
 	"toDoList/tasks/models"
 )
 
-type TasksRepository struct {
-	tasks map[string]models.Task
-}
-
-func (repo *TasksRepository) SetupRepository() {
-	repo.tasks = make(map[string]models.Task)
-}
-
-func (repo TasksRepository) FindByTitle(title string) (models.Task, error) {
-	if task, ok := repo.tasks[title]; ok {
+func FindByTitle(filePath string, title string) (models.Task, error) {
+	tasks, err := getTasksFromFile(filePath)
+	if err != nil {
+		return models.Task{}, err
+	}
+	if task, ok := tasks[title]; ok {
 		return task, nil
 	} else {
-		return models.Task{}, errors.New("Can not find Task")
+		return models.Task{}, errors.New("can not find Task")
 	}
 }
 
-func (repo *TasksRepository) Save(task models.Task) {
-	repo.tasks[task.Title] = task
+func Save(filePath string, task models.Task) error {
+	tasks, err := getTasksFromFile(filePath)
+	if err != nil {
+		return err
+	}
+	tasks[task.Title] = task
+	data, err := json.Marshal(tasks)
+	if err != nil {
+		return err
+	}
+	err = os.WriteFile(filePath, data, fs.FileMode(os.ModePerm))
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-func (repo TasksRepository) FindAll() map[string]models.Task {
-	return repo.tasks
+func FindAll(filePath string) (map[string]models.Task, error) {
+	tasks, err := getTasksFromFile(filePath)
+	if err != nil {
+		return map[string]models.Task{}, err
+	}
+	return tasks, nil
+}
+
+func getTasksFromFile(path string) (tasks map[string]models.Task, err error) {
+	content, err := os.ReadFile(path)
+	if err != nil {
+		return map[string]models.Task{}, fmt.Errorf("error reading tasks: %s", err.Error())
+	}
+	err = json.Unmarshal(content, &tasks)
+	if err != nil {
+		return map[string]models.Task{}, fmt.Errorf("error reading tasks: %s", err.Error())
+	}
+	return tasks, nil
 }
