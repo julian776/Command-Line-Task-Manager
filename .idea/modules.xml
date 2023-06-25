@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/toDoList.iml" filepath="$PROJECT_DIR$/.idea/toDoList.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/github.com/julian776/Command-Line-Task-Manager.iml" filepath="$PROJECT_DIR$/.idea/github.com/julian776/Command-Line-Task-Manager.iml" />
     </modules>
   </component>
 </project>

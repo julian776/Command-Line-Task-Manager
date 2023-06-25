@@ -4,9 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"toDoList/tasks/models"
-	"toDoList/tasks/repositories"
-	"toDoList/tasks/settings"
+
+	"github.com/julian776/Command-Line-Task-Manager/tasks/models"
+	"github.com/julian776/Command-Line-Task-Manager/tasks/repositories"
+	"github.com/julian776/Command-Line-Task-Manager/tasks/settings"
 )
 
 type TasksService struct {

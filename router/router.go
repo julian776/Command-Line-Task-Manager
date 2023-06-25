@@ -2,7 +2,8 @@ package router
 
 import (
 	"fmt"
-	"toDoList/tasks/services"
+
+	"github.com/julian776/Command-Line-Task-Manager/tasks/services"
 )
 
 type Router struct {

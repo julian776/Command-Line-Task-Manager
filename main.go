@@ -2,7 +2,8 @@ package main
 
 import (
 	"os"
-	"toDoList/helpers"
+
+	"github.com/julian776/Command-Line-Task-Manager/helpers"
 )
 
 func main() {

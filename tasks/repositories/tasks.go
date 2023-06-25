@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"toDoList/tasks/models"
+
+	"github.com/julian776/Command-Line-Task-Manager/tasks/models"
 )
 
 func FindByTitle(filePath string, title string) (models.Task, error) {

@@ -17,7 +17,7 @@ There are two ways to install the Command-Line Task Manager:
    - Ensure you have [Go](https://golang.org/) installed on your system.
    - Open the command line interface and execute the following command:
      ```
-     $ go install https://github.com/julian776/Task-Manager.git
+     $ go install github.com/julian776/Command-Line-Task-Manager
      ```
 
 ### Available Commands

@@ -5,9 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"toDoList/router"
-	"toDoList/tasks/services"
-	"toDoList/tasks/settings"
+
+	"github.com/julian776/Command-Line-Task-Manager/router"
+	"github.com/julian776/Command-Line-Task-Manager/tasks/services"
+	"github.com/julian776/Command-Line-Task-Manager/tasks/settings"
 )
 
 func ReadCommand(scanner *bufio.Scanner) string {
@@ -16,7 +17,7 @@ func ReadCommand(scanner *bufio.Scanner) string {
 }
 
 const (
-	loadError = "can not load toDoList"
+	loadError = "can not load github.com/julian776/Command-Line-Task-Manager"
 )
 
 func Setup() router.Router {
