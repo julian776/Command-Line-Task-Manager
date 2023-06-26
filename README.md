@@ -30,7 +30,7 @@ The Command-Line Task Manager offers the following commands to help you manage y
 
    Example:
    ```
-   $ task-manager ls
+   $ Command-Line-Task-Manager ls
    ```
 
 2. **add** - Add a Task
@@ -39,12 +39,12 @@ The Command-Line Task Manager offers the following commands to help you manage y
 
    Syntax:
    ```
-   $ task-manager add [title] [description]
+   $ Command-Line-Task-Manager add [title] [description]
    ```
 
    Example:
    ```
-   $ task-manager add "Complete-Project" "Finish the final report and submit it by Friday."
+   $ Command-Line-Task-Manager add "Complete-Project" "Finish the final report and submit it by Friday."
    ```
 
 3. **show** - View Specific Task
@@ -53,12 +53,12 @@ The Command-Line Task Manager offers the following commands to help you manage y
 
    Syntax:
    ```
-   $ task-manager show [title]
+   $ Command-Line-Task-Manager show [title]
    ```
 
    Example:
    ```
-   $ task-manager show "Complete-Project"
+   $ Command-Line-Task-Manager show "Complete-Project"
    ```
 
 4. **[more commands]** - Coming Soon
