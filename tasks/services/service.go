@@ -45,7 +45,7 @@ func (s *TasksService) UpdateDescription(params []string) (string, error) {
 		repositories.Save(s.settings.FileName, task)
 		return "Task Updated", nil
 	} else {
-		return errorStr, errors.New("Can not find a task with tittle " + title)
+		return errorStr, errors.New("Can not find a task with title " + title)
 	}
 }
 
@@ -69,6 +69,17 @@ func (s *TasksService) PrintAllTasks(_ []string) (string, error) {
 		fmt.Println(task)
 	}
 	return "", nil
+}
+
+func (s *TasksService) CompleteTask(params []string) (string, error) {
+	title := params[0]
+	task, err := repositories.FindByTitle(s.settings.FileName, title)
+	if err != nil {
+		return errorStr, errors.New("Can not find a task with title " + title)
+	}
+	task.SetComplete()
+	repositories.Save(s.settings.FileName, task)
+	return "Task Completed", nil
 }
 
 func (s *TasksService) NewTasksService(settings settings.Settings) {

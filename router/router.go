@@ -17,6 +17,7 @@ func (router Router) Router(operation []string) {
 		"ls":   router.tasksService.PrintAllTasks,
 		"show": router.tasksService.FindTask,
 		"add":  router.tasksService.AddTask,
+		"done": router.tasksService.CompleteTask,
 	}
 
 	if value, exists := routes[operation[0]]; exists {
