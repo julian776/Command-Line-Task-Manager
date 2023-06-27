@@ -1,4 +1,4 @@
-## Command-Line Task Manager Documentation
+# Command-Line Task Manager
 
 The Command-Line Task Manager is a tool designed to help you manage your tasks efficiently using simple commands from the command line interface.
 
@@ -61,8 +61,18 @@ The Command-Line Task Manager offers the following commands to help you manage y
    $ Command-Line-Task-Manager show "Complete-Project"
    ```
 
-4. **[more commands]** - Coming Soon
+4. **done** - Mark Task as Done
 
-   The Command-Line Task Manager team is actively working on introducing more commands to enhance your task management experience. Stay tuned for updates and additional functionalities.
+   The `done` command allows you to mark a task as completed. Specify the title of the task you want to mark as done.
 
-That's it! You are now ready to manage your tasks efficiently using the Command-Line Task Manager. If you have any further questions or need assistance, please refer to the project documentation or contact our support team.
+   Syntax:
+   ```
+   $ Command-Line-Task-Manager done [title]
+   ```
+
+   Example:
+   ```
+   $ Command-Line-Task-Manager done "Complete-Project"
+   ```
+
+5. **[more commands]** - Coming Soon
