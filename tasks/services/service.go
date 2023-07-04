@@ -82,6 +82,53 @@ func (s *TasksService) CompleteTask(params []string) (string, error) {
 	return "Task Completed", nil
 }
 
+func (s *TasksService) PrintFullDocs(params []string) (string, error) {
+	fmt.Println(`
+	ls - List all your tasks.
+		Example:
+			Command-Line-Task-Manager ls
+ 
+	add - Add a Task
+ 		The add command allows you to add
+		a new task to your task list.
+		It requires a title and a description
+		for the task.
+ 
+		Syntax:
+			Command-Line-Task-Manager add [title] [description]
+		
+		Example:
+			Command-Line-Task-Manager add Complete-Project Finish the final report and submit it by Friday.
+	
+ 
+ 	show - View Specific Task
+		The show command displays the
+		details of a specific task based
+		on its title.
+	
+		Syntax:
+			Command-Line-Task-Manager show [title]
+			
+		Example:
+			Command-Line-Task-Manager show Complete-Project
+		
+ 
+ 	done - Mark Task as Done
+		The done command allows you to mark
+		a task as completed.
+		Specify the title of the task you
+		want to mark as done.
+	
+		Syntax:
+			Command-Line-Task-Manager done [title]
+		
+		Example:
+			Command-Line-Task-Manager done Complete-Project
+	`)
+
+	return "", nil
+}
+
 func (s *TasksService) NewTasksService(settings settings.Settings) {
 	s.settings = settings
 }

@@ -14,6 +14,7 @@ type fn func([]string) (string, error)
 
 func (router Router) Router(operation []string) {
 	routes := map[string]fn{
+		"help": router.tasksService.PrintFullDocs,
 		"ls":   router.tasksService.PrintAllTasks,
 		"show": router.tasksService.FindTask,
 		"add":  router.tasksService.AddTask,
