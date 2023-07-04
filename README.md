@@ -20,6 +20,13 @@ There are two ways to install the Command-Line Task Manager:
      $ go install github.com/julian776/Command-Line-Task-Manager
      ```
 
+### Alias (Optional)
+Creating an alias can significantly simplify the usage of the "Command-Line-Task-Manager" command by providing a shorter and more intuitive alternative. In this case, the chosen alias "tdl" is derived from the term "to-do list," which aligns with the purpose of the task manager.
+
+By using the alias "tdl" you can conveniently execute the "Command-Line-Task-Manager" command with just three keystrokes, saving time and effort compared to typing the entire command each time.
+
+Check how to setup an alias [here](./docs/alias.md)
+
 ### Available Commands
 
 The Command-Line Task Manager offers the following commands to help you manage your tasks effectively:
