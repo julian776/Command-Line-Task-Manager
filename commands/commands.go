@@ -17,7 +17,7 @@ func BuildCommmand() *models.Command {
 	flag.Parse()
 
 	cmd.CmdType = os.Args[1]
-	cmd.Args = flag.Args()
+	cmd.Args = flag.Args()[1:]
 
 	return cmd
 }

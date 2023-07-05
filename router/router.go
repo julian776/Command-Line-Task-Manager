@@ -11,7 +11,7 @@ type Router struct {
 	tasksService services.TasksService
 }
 
-type fn func([]string) (string, error)
+type fn func(cmd *models.Command) (string, error)
 
 func (router Router) Router(cmd *models.Command) {
 	routes := map[string]fn{
@@ -23,7 +23,7 @@ func (router Router) Router(cmd *models.Command) {
 	}
 
 	if handler, exists := routes[cmd.CmdType]; exists {
-		response, err := handler(cmd.Args)
+		response, err := handler(cmd)
 		if err != nil {
 			fmt.Println(err)
 		} else {

@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	cmdsModel "github.com/julian776/Command-Line-Task-Manager/commands/models"
 	"github.com/julian776/Command-Line-Task-Manager/tasks/models"
 	"github.com/julian776/Command-Line-Task-Manager/tasks/repositories"
 	"github.com/julian776/Command-Line-Task-Manager/tasks/settings"
@@ -19,9 +20,9 @@ const (
 	errorStr = "ERROR"
 )
 
-func (s *TasksService) AddTask(params []string) (string, error) {
-	title := params[0]
-	desc := strings.Join(params[1:], " ")
+func (s *TasksService) AddTask(cmd *cmdsModel.Command) (string, error) {
+	title := cmd.Args[0]
+	desc := strings.Join(cmd.Args[1:], " ")
 	if title == "" {
 		return errorStr, errors.New("not possible to create a task with empty title")
 	}
@@ -38,9 +39,9 @@ func (s *TasksService) AddTask(params []string) (string, error) {
 	return "Task created", nil
 }
 
-func (s *TasksService) UpdateDescription(params []string) (string, error) {
-	title := params[0]
-	desc := strings.Join(params[1:], " ")
+func (s *TasksService) UpdateDescription(cmd *cmdsModel.Command) (string, error) {
+	title := cmd.Args[0]
+	desc := strings.Join(cmd.Args[1:], " ")
 	task, err := repositories.FindByTitle(s.settings.FileName, title)
 	if err != nil {
 		task.ChangeDescription(desc)
@@ -51,8 +52,8 @@ func (s *TasksService) UpdateDescription(params []string) (string, error) {
 	}
 }
 
-func (s *TasksService) FindTask(params []string) (string, error) {
-	task, err := repositories.FindByTitle(s.settings.FileName, params[0])
+func (s *TasksService) FindTask(cmd *cmdsModel.Command) (string, error) {
+	task, err := repositories.FindByTitle(s.settings.FileName, cmd.Args[0])
 	if err != nil {
 		return "", err
 	} else {
@@ -60,7 +61,7 @@ func (s *TasksService) FindTask(params []string) (string, error) {
 	}
 }
 
-func (s *TasksService) PrintAllTasks(_ []string) (string, error) {
+func (s *TasksService) PrintAllTasks(_ *cmdsModel.Command) (string, error) {
 	tasks, err := repositories.FindAll(s.settings.FileName)
 	if err != nil {
 		fmt.Println(err)
@@ -72,8 +73,8 @@ func (s *TasksService) PrintAllTasks(_ []string) (string, error) {
 	return "", nil
 }
 
-func (s *TasksService) CompleteTask(params []string) (string, error) {
-	title := params[0]
+func (s *TasksService) CompleteTask(cmd *cmdsModel.Command) (string, error) {
+	title := cmd.Args[0]
 	task, err := repositories.FindByTitle(s.settings.FileName, title)
 	if err != nil {
 		return errorStr, errors.New("Can not find a task with title " + title)
@@ -83,7 +84,7 @@ func (s *TasksService) CompleteTask(params []string) (string, error) {
 	return "Task Completed", nil
 }
 
-func (s *TasksService) PrintFullDocs(params []string) (string, error) {
+func (s *TasksService) PrintFullDocs(_ *cmdsModel.Command) (string, error) {
 	fmt.Println(`
 	ls - List all your tasks.
 		Example:
