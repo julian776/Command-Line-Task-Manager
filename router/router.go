@@ -3,6 +3,7 @@ package router
 import (
 	"fmt"
 
+	"github.com/julian776/Command-Line-Task-Manager/commands/models"
 	"github.com/julian776/Command-Line-Task-Manager/tasks/services"
 )
 
@@ -12,7 +13,7 @@ type Router struct {
 
 type fn func([]string) (string, error)
 
-func (router Router) Router(operation []string) {
+func (router Router) Router(cmd *models.Command) {
 	routes := map[string]fn{
 		"help": router.tasksService.PrintFullDocs,
 		"ls":   router.tasksService.PrintAllTasks,
@@ -21,8 +22,8 @@ func (router Router) Router(operation []string) {
 		"done": router.tasksService.CompleteTask,
 	}
 
-	if value, exists := routes[operation[0]]; exists {
-		response, err := value(operation[1:])
+	if handler, exists := routes[cmd.CmdType]; exists {
+		response, err := handler(cmd.Args)
 		if err != nil {
 			fmt.Println(err)
 		} else {
