@@ -1,9 +1,12 @@
 package models
 
+import "time"
+
 type Task struct {
-	Title       string `json:"title,omitempty"`
-	Description string `json:"description,omitempty"`
-	IsCompleted bool   `json:"isCompleted,omitempty"`
+	Title       string    `json:"title,omitempty"`
+	Description string    `json:"description,omitempty"`
+	IsCompleted bool      `json:"isCompleted,omitempty"`
+	CreatedAt   time.Time `json:"createdAt,omitempty"`
 }
 
 func (task Task) String() string {
@@ -13,6 +16,7 @@ func (task Task) String() string {
 	} else {
 		taskString += "Not completed"
 	}
+	taskString += "\n" + task.CreatedAt.Local().Format(time.DateTime)
 	return taskString
 }
 

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/julian776/Command-Line-Task-Manager/tasks/models"
 	"github.com/julian776/Command-Line-Task-Manager/tasks/repositories"
@@ -31,6 +32,7 @@ func (s *TasksService) AddTask(params []string) (string, error) {
 		Title:       title,
 		Description: desc,
 		IsCompleted: false,
+		CreatedAt:   time.Now(),
 	}
 	repositories.Save(s.settings.FileName, taskToAdd)
 	return "Task created", nil
@@ -50,7 +52,6 @@ func (s *TasksService) UpdateDescription(params []string) (string, error) {
 }
 
 func (s *TasksService) FindTask(params []string) (string, error) {
-	fmt.Println(params[0])
 	task, err := repositories.FindByTitle(s.settings.FileName, params[0])
 	if err != nil {
 		return "", err
