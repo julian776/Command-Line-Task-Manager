@@ -12,6 +12,10 @@ func BuildCommmand() *models.Command {
 		Flags: map[string]string{},
 	}
 
+	if len(os.Args) < 2 {
+		return cmd
+	}
+
 	addFlags(cmd)
 	// Must be called after addFlags do not move
 	flag.Parse()
