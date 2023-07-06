@@ -8,14 +8,15 @@ import (
 	"os"
 
 	"github.com/julian776/Command-Line-Task-Manager/tasks/models"
+	"github.com/julian776/Command-Line-Task-Manager/tasks/repositories/settings"
 )
 
 type TasksRepository struct {
-	FilePath string
+	settings settings.Settings
 }
 
 func (r *TasksRepository) FindByTitle(title string) (models.Task, error) {
-	tasks, err := getTasksFromFile(r.FilePath)
+	tasks, err := getTasksFromFile(r.settings.FilePath)
 	if err != nil {
 		return models.Task{}, err
 	}
@@ -27,7 +28,7 @@ func (r *TasksRepository) FindByTitle(title string) (models.Task, error) {
 }
 
 func (r *TasksRepository) Save(task models.Task) error {
-	tasks, err := getTasksFromFile(r.FilePath)
+	tasks, err := getTasksFromFile(r.settings.FilePath)
 	if err != nil {
 		return err
 	}
@@ -36,7 +37,7 @@ func (r *TasksRepository) Save(task models.Task) error {
 	if err != nil {
 		return err
 	}
-	err = os.WriteFile(r.FilePath, data, fs.FileMode(os.ModePerm))
+	err = os.WriteFile(r.settings.FilePath, data, fs.FileMode(os.ModePerm))
 	if err != nil {
 		return err
 	}
@@ -44,7 +45,7 @@ func (r *TasksRepository) Save(task models.Task) error {
 }
 
 func (r *TasksRepository) FindAll() (map[string]models.Task, error) {
-	tasks, err := getTasksFromFile(r.FilePath)
+	tasks, err := getTasksFromFile(r.settings.FilePath)
 	if err != nil {
 		return map[string]models.Task{}, err
 	}
@@ -63,8 +64,8 @@ func getTasksFromFile(filePath string) (tasks map[string]models.Task, err error)
 	return tasks, nil
 }
 
-func NewTasksRepository(filePath string) *TasksRepository {
+func NewTasksRepository(settings settings.Settings) *TasksRepository {
 	return &TasksRepository{
-		filePath,
+		settings,
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/julian776/Command-Line-Task-Manager/tasks/models"
+	"github.com/julian776/Command-Line-Task-Manager/tasks/repositories/settings"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -38,7 +39,7 @@ func (trs *TaskRepositoryTests) TestFindAll() {
 
 func (trs *TaskRepositoryTests) TestFindAllErrorNoFile() {
 	wrongFilePath := "fghfghfghgf.json"
-	trs.tasksRepo.FilePath = wrongFilePath
+	trs.tasksRepo.settings.FilePath = wrongFilePath
 	//emptyTask := models.Task{}
 
 	mapTasks, err := trs.tasksRepo.FindAll()
@@ -68,7 +69,10 @@ func (trs *TaskRepositoryTests) TestFindByTitleError() {
 }
 
 func (trs *TaskRepositoryTests) SetupTest() {
-	trs.tasksRepo = *NewTasksRepository(trs.filePath)
+	settings := settings.Settings{
+		FilePath: trs.filePath,
+	}
+	trs.tasksRepo = *NewTasksRepository(settings)
 }
 
 func (trs *TaskRepositoryTests) SetupSuite() {

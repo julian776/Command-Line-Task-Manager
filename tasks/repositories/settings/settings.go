@@ -10,7 +10,7 @@ const (
 )
 
 type Settings struct {
-	FileName string `json:"fileName,omitempty"`
+	FilePath string `json:"filePath,omitempty"`
 }
 
 func LoadSettings() (settings Settings, err error) {
