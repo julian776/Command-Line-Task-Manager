@@ -1,1 +1,5 @@
 tasks.json
+
+# Sonar
+.scannerwork/
+sonar-project.properties
