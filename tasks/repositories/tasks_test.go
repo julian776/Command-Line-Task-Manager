@@ -14,31 +14,34 @@ const (
 
 type TaskRepositoryTests struct {
 	suite.Suite
-	filePath string
+	filePath  string
+	tasksRepo TasksRepository
 }
 
 func TestRepoTasks(t *testing.T) {
 	suite.Run(t, &TaskRepositoryTests{
-		filePath: FILE_PATH,
+		filePath:  FILE_PATH,
+		tasksRepo: TasksRepository{},
 	})
 }
 
 func (trs *TaskRepositoryTests) TestSaveTask() {
-	err := Save(trs.filePath, models.Task{})
+	err := trs.tasksRepo.Save(models.Task{})
 	trs.Nil(err)
 }
 
 func (trs *TaskRepositoryTests) TestFindAll() {
-	mapTasks, err := FindAll(trs.filePath)
+	mapTasks, err := trs.tasksRepo.FindAll()
 	trs.Nil(err)
 	trs.Len(mapTasks, 0)
 }
 
 func (trs *TaskRepositoryTests) TestFindAllErrorNoFile() {
 	wrongFilePath := "fghfghfghgf.json"
+	trs.tasksRepo.FilePath = wrongFilePath
 	//emptyTask := models.Task{}
 
-	mapTasks, err := FindAll(wrongFilePath)
+	mapTasks, err := trs.tasksRepo.FindAll()
 	trs.Error(err)
 	trs.Len(mapTasks, 0)
 }
@@ -48,9 +51,9 @@ func (trs *TaskRepositoryTests) TestFindByTitle() {
 	task := models.Task{
 		Title: taskTitle,
 	}
-	Save(trs.filePath, task)
+	trs.tasksRepo.Save(task)
 
-	taskGot, err := FindByTitle(trs.filePath, taskTitle)
+	taskGot, err := trs.tasksRepo.FindByTitle(taskTitle)
 	trs.Nil(err)
 	trs.Equal(task, taskGot)
 }
@@ -59,9 +62,13 @@ func (trs *TaskRepositoryTests) TestFindByTitleError() {
 	taskTitle := "task1"
 	emptyTask := models.Task{}
 
-	taskGot, err := FindByTitle(trs.filePath, taskTitle)
+	taskGot, err := trs.tasksRepo.FindByTitle(taskTitle)
 	trs.Error(err)
 	trs.Equal(emptyTask, taskGot)
+}
+
+func (trs *TaskRepositoryTests) SetupTest() {
+	trs.tasksRepo = *NewTasksRepository(trs.filePath)
 }
 
 func (trs *TaskRepositoryTests) SetupSuite() {
