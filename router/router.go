@@ -8,7 +8,7 @@ import (
 )
 
 type Router struct {
-	tasksService services.TasksService
+	tasksService *services.TasksService
 }
 
 type fn func(cmd *models.Command) (string, error)
@@ -32,6 +32,8 @@ func (router Router) Router(cmd *models.Command) {
 	}
 }
 
-func (router *Router) SetupService(service services.TasksService) {
-	router.tasksService = service
+func NewRouter(service *services.TasksService) *Router {
+	return &Router{
+		service,
+	}
 }
