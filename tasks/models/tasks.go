@@ -1,27 +1,32 @@
 package models
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type Task struct {
 	Title       string    `json:"title,omitempty"`
 	Description string    `json:"description,omitempty"`
 	IsCompleted bool      `json:"isCompleted,omitempty"`
 	CreatedAt   time.Time `json:"createdAt,omitempty"`
+	CompletedAt time.Time `json:"completedAt,omitempty"`
 }
 
 func (task Task) String() string {
 	taskString := "\n" + task.Title + "\n" + task.Description + "\n"
 	if task.IsCompleted {
-		taskString += "Completed"
+		taskString += fmt.Sprintf("Completed at %s", task.CompletedAt.Local().Format(time.DateTime))
 	} else {
 		taskString += "Not completed"
 	}
-	taskString += "\n" + task.CreatedAt.Local().Format(time.DateTime)
+	taskString += fmt.Sprintf("\nCreated at %s", task.CreatedAt.Local().Format(time.DateTime))
 	return taskString
 }
 
 func (task *Task) SetComplete() {
 	task.IsCompleted = true
+	task.CompletedAt = time.Now()
 }
 
 func (task *Task) SetUncomplete() {
