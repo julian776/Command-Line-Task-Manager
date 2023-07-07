@@ -34,30 +34,33 @@ func (s *TasksService) AddTask(cmd *cmdsModel.Command) (string, error) {
 		IsCompleted: false,
 		CreatedAt:   time.Now(),
 	}
-	s.TasksRepo.Save(taskToAdd)
-	return "Task created", nil
+	err := s.TasksRepo.Save(taskToAdd)
+	if err != nil {
+		return errorStr, errors.New("not possible to create a task")
+	}
+	return taskToAdd.String(), nil
 }
 
 func (s *TasksService) UpdateDescription(cmd *cmdsModel.Command) (string, error) {
 	title := cmd.Args[0]
 	desc := strings.Join(cmd.Args[1:], " ")
+
 	task, err := s.TasksRepo.FindByTitle(title)
 	if err != nil {
-		task.ChangeDescription(desc)
-		s.TasksRepo.Save(task)
-		return "Task Updated", nil
-	} else {
 		return errorStr, errors.New("Can not find a task with title " + title)
 	}
+	task.ChangeDescription(desc)
+	s.TasksRepo.Save(task)
+	return task.String(), nil
 }
 
 func (s *TasksService) FindTask(cmd *cmdsModel.Command) (string, error) {
 	task, err := s.TasksRepo.FindByTitle(cmd.Args[0])
 	if err != nil {
-		return "", err
-	} else {
-		return task.String(), nil
+		return errorStr, err
 	}
+
+	return task.String(), nil
 }
 
 func (s *TasksService) PrintAllTasks(_ *cmdsModel.Command) (string, error) {
@@ -80,7 +83,7 @@ func (s *TasksService) CompleteTask(cmd *cmdsModel.Command) (string, error) {
 	}
 	task.SetComplete()
 	s.TasksRepo.Save(task)
-	return "Task Completed", nil
+	return task.String(), nil
 }
 
 func (s *TasksService) PrintFullDocs(_ *cmdsModel.Command) (string, error) {

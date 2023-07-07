@@ -17,14 +17,15 @@ type TasksRepository struct {
 
 func (r *TasksRepository) FindByTitle(title string) (models.Task, error) {
 	tasks, err := getTasksFromFile(r.settings.FilePath)
+
 	if err != nil {
 		return models.Task{}, err
 	}
 	if task, ok := tasks[title]; ok {
 		return task, nil
-	} else {
-		return models.Task{}, errors.New("can not find Task")
 	}
+
+	return models.Task{}, errors.New("can not find Task")
 }
 
 func (r *TasksRepository) Save(task models.Task) error {
