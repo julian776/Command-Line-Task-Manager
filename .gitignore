@@ -1,5 +1,8 @@
 tasks.json
 
+.idea/
+.vscode/
+
 # Sonar
 .scannerwork/
 sonar-project.properties

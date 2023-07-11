@@ -1,0 +1,5 @@
+#!/bin/sh
+
+go fmt .
+go test -coverprofile=./bin/cov.out ./... 
+go tool cover -func=./bin/cov.out
