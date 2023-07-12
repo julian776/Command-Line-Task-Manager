@@ -20,6 +20,22 @@ There are two ways to install the Command-Line Task Manager:
      $ go install github.com/julian776/Command-Line-Task-Manager
      ```
 
+3. **Iinitialize**
+
+   - Run the initialization command to set up the task directory
+     ```
+     $ Command-Line-Task-Manager init
+     ```
+     This command creates the default task directory at $HOME/Command-Line-Task-Manager.
+
+### Configuration
+The Command-Line Task Manager allows you to customize the location of the task directory by updating the settings. To update the task directory location, use the following command: (Must be an absolute path)
+
+```
+$ Command-Line-Task-Manager settings [new-directory-path]
+```
+Replace [new-directory-path] with the desired location for the task directory. For example, you can set it to /home/path/to/tasks.
+
 ### Alias (Optional)
 Creating an alias can significantly simplify the usage of the "Command-Line-Task-Manager" command by providing a shorter and more intuitive alternative. In this case, the chosen alias "tdl" is derived from the term "to-do list," which aligns with the purpose of the task manager.
 

@@ -65,7 +65,18 @@ done - Mark Task as Done
 		Command-Line-Task-Manager done [title]
 	
 	Example:
-		Command-Line-Task-Manager done Complete-Project`
+		Command-Line-Task-Manager done Complete-Project
+
+init - Set up the task directory.
+	Example:
+		Command-Line-Task-Manager init
+		
+settings - Update the task directory location
+	This command not copy the tasks
+	you already have created
+	
+	Syntax:
+		$ Command-Line-Task-Manager settings [new-directory-path]`
 )
 
 func (s *TasksService) Initialize(cmd *cmdsModel.Command) (string, error) {
