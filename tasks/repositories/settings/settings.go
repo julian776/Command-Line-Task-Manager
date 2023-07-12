@@ -29,6 +29,15 @@ func LoadSettings() (settings Settings, err error) {
 	if err != nil {
 		return Settings{}, err
 	}
+
+	if settings.FilePath == "" {
+		homePath, err := os.UserHomeDir()
+		if err != nil {
+			return Settings{}, err
+		}
+		settings.FilePath = homePath + "/Command-Line-Task-Manager"
+	}
+
 	return settings, nil
 }
 
@@ -39,7 +48,7 @@ func UpdateSettings(settingsToUpdate Settings) (Settings, error) {
 	}
 	err = os.WriteFile(fileSettings, data, os.ModePerm)
 	if err != nil {
-		return Settings{}, errors.New("can not create settings file, you are using root user?")
+		return Settings{}, errors.New("can not update settings, you are using root user?")
 	}
 
 	return settingsToUpdate, nil
