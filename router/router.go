@@ -19,13 +19,12 @@ type fn func(cmd *models.Command) (string, error)
 
 func (router *Router) Router(cmd *models.Command) {
 	routes := map[string]fn{
-		"init":     router.tasksService.Initialize,
-		"help":     router.tasksService.PrintFullDocs,
-		"settings": router.tasksService.UpdateTasksSettings,
-		"ls":       router.tasksService.PrintAllTasks,
-		"show":     router.tasksService.FindTask,
-		"add":      router.tasksService.AddTask,
-		"done":     router.tasksService.CompleteTask,
+		"init": router.tasksService.Initialize,
+		"help": router.tasksService.PrintFullDocs,
+		"ls":   router.tasksService.PrintAllTasks,
+		"show": router.tasksService.FindTask,
+		"add":  router.tasksService.AddTask,
+		"done": router.tasksService.CompleteTask,
 	}
 
 	if handler, exists := routes[cmd.CmdType]; exists {

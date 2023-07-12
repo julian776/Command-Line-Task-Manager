@@ -1,12 +1,8 @@
 package services
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
-	"io/fs"
-	"os"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -80,13 +76,7 @@ settings - Update the task directory location
 )
 
 func (s *TasksService) Initialize(cmd *cmdsModel.Command) (string, error) {
-	settings, err := settings.LoadSettings()
-	if err != nil {
-		return errorStr, errors.New(initializeErrorStr)
-	}
-
-	path := filepath.Dir(settings.FilePath)
-	err = os.MkdirAll(path, fs.ModePerm)
+	err := settings.CreateDefaultSettingsFile()
 	if err != nil {
 		return errorStr, errors.New(initializeErrorStr)
 	}
@@ -141,7 +131,6 @@ func (s *TasksService) FindTask(cmd *cmdsModel.Command) (string, error) {
 func (s *TasksService) PrintAllTasks(_ *cmdsModel.Command) (string, error) {
 	tasks, err := s.TasksRepo.FindAll()
 	if err != nil {
-		fmt.Println(err)
 		return "", err
 	}
 	for _, task := range tasks {
@@ -159,35 +148,6 @@ func (s *TasksService) CompleteTask(cmd *cmdsModel.Command) (string, error) {
 	task.SetComplete()
 	s.TasksRepo.Save(task)
 	return task.String(), nil
-}
-
-func (s *TasksService) UpdateTasksSettings(cmd *cmdsModel.Command) (string, error) {
-	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Print(`
-Specify the absolute path where you like to save the tasks file: `)
-
-	if scanner.Scan() {
-		path := scanner.Text()
-		path = filepath.Clean(path)
-
-		if !filepath.IsAbs(path) {
-			return errorStr, errors.New("file path must be absolute")
-		}
-
-		filePath := path + "/tasks.json"
-		settingsToUpdate := settings.NewSettings(filePath)
-		_, err := settings.UpdateSettings(*settingsToUpdate)
-		if err != nil {
-			return errorStr, errors.New(initializeErrorStr)
-		}
-
-		// We create the dir provided by user
-		err = os.MkdirAll(path, os.ModePerm)
-		if err != nil {
-			return errorStr, errors.New(initializeErrorStr)
-		}
-	}
-	return "Command-Line-Task-Manager settings updated", nil
 }
 
 func (s *TasksService) PrintFullDocs(_ *cmdsModel.Command) (string, error) {
