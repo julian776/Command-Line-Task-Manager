@@ -33,7 +33,7 @@ func (task *Task) SetUncomplete() {
 	task.IsCompleted = false
 }
 
-func (task *Task) ChangeDescription(newDescription string) string {
+func (task *Task) UpdateDescription(newDescription string) string {
 	task.Description = newDescription
 	return "Description updated"
 }
@@ -46,4 +46,14 @@ func (task *Task) AppendDescription(text string) string {
 func (task *Task) UpdateTitle(newTitle string) string {
 	task.Title = newTitle
 	return "Title updated"
+}
+
+func NewTask(title, description string) *Task {
+	return &Task{
+		title,
+		description,
+		false,
+		time.Now(),
+		time.Time{},
+	}
 }

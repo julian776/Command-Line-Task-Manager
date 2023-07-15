@@ -107,7 +107,7 @@ func (s *TasksService) UpdateDescription(cmd *cmdsModel.Command) (string, error)
 	if err != nil {
 		return errorStr, errors.New("Can not find a task with title " + title)
 	}
-	task.ChangeDescription(desc)
+	task.UpdateDescription(desc)
 	s.TasksRepo.Save(task)
 	return task.String(), nil
 }
