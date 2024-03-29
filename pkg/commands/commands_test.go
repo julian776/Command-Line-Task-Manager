@@ -4,8 +4,6 @@ import (
 	"os"
 	"reflect"
 	"testing"
-
-	"github.com/julian776/Command-Line-Task-Manager/commands/models"
 )
 
 func TestBuildCommmand(t *testing.T) {
@@ -13,11 +11,11 @@ func TestBuildCommmand(t *testing.T) {
 
 	tests := []struct {
 		name string
-		want *models.Command
+		want *Command
 	}{
 		{
 			name: "Should create a correct command",
-			want: &models.Command{
+			want: &Command{
 				CmdType: cmdType,
 				Args:    []string{},
 				Flags: map[string]string{

@@ -1,4 +1,4 @@
-package services
+package tasks
 
 import (
 	"errors"
@@ -6,14 +6,11 @@ import (
 	"strings"
 	"time"
 
-	cmdsModel "github.com/julian776/Command-Line-Task-Manager/commands/models"
-	"github.com/julian776/Command-Line-Task-Manager/tasks/models"
-	"github.com/julian776/Command-Line-Task-Manager/tasks/repositories"
-	"github.com/julian776/Command-Line-Task-Manager/tasks/repositories/settings"
+	"github.com/julian776/Command-Line-Task-Manager/pkg/commands"
 )
 
 type TasksService struct {
-	TasksRepo *repositories.TasksRepository
+	TasksRepo *TasksRepository
 }
 
 const (
@@ -21,7 +18,7 @@ const (
 
 	initializeErrorStr = "not posible to initialize Command-Line-Task-Manager, you are using root user?"
 
-	FULL_DOCS = `
+	fullDocs = `
 ls - List all your tasks.
 	Example:
 		Command-Line-Task-Manager ls
@@ -68,8 +65,8 @@ init - Set up the task directory.
 		Command-Line-Task-Manager init`
 )
 
-func (s *TasksService) Initialize(cmd *cmdsModel.Command) (string, error) {
-	err := settings.CreateDefaultSettingsFile()
+func (s *TasksService) Initialize(cmd *commands.Command) (string, error) {
+	err := CreateDefaultSettingsFile()
 	if err != nil {
 		return errorStr, errors.New(initializeErrorStr)
 	}
@@ -77,7 +74,7 @@ func (s *TasksService) Initialize(cmd *cmdsModel.Command) (string, error) {
 	return "Command-Line-Task-Manager Initialized", nil
 }
 
-func (s *TasksService) AddTask(cmd *cmdsModel.Command) (string, error) {
+func (s *TasksService) AddTask(cmd *commands.Command) (string, error) {
 	title := cmd.Args[0]
 	desc := strings.Join(cmd.Args[1:], " ")
 	if title == "" {
@@ -86,7 +83,7 @@ func (s *TasksService) AddTask(cmd *cmdsModel.Command) (string, error) {
 	if desc == "" {
 		return errorStr, errors.New("not possible to create a task with empty description")
 	}
-	taskToAdd := models.Task{
+	taskToAdd := Task{
 		Title:       title,
 		Description: desc,
 		IsCompleted: false,
@@ -99,7 +96,7 @@ func (s *TasksService) AddTask(cmd *cmdsModel.Command) (string, error) {
 	return taskToAdd.String(), nil
 }
 
-func (s *TasksService) UpdateDescription(cmd *cmdsModel.Command) (string, error) {
+func (s *TasksService) UpdateDescription(cmd *commands.Command) (string, error) {
 	title := cmd.Args[0]
 	desc := strings.Join(cmd.Args[1:], " ")
 
@@ -112,7 +109,7 @@ func (s *TasksService) UpdateDescription(cmd *cmdsModel.Command) (string, error)
 	return task.String(), nil
 }
 
-func (s *TasksService) FindTask(cmd *cmdsModel.Command) (string, error) {
+func (s *TasksService) FindTask(cmd *commands.Command) (string, error) {
 	task, err := s.TasksRepo.FindByTitle(cmd.Args[0])
 	if err != nil {
 		return errorStr, err
@@ -121,7 +118,7 @@ func (s *TasksService) FindTask(cmd *cmdsModel.Command) (string, error) {
 	return task.String(), nil
 }
 
-func (s *TasksService) PrintAllTasks(_ *cmdsModel.Command) (string, error) {
+func (s *TasksService) PrintAllTasks(_ *commands.Command) (string, error) {
 	tasks, err := s.TasksRepo.FindAll()
 	if err != nil {
 		return "", err
@@ -132,7 +129,7 @@ func (s *TasksService) PrintAllTasks(_ *cmdsModel.Command) (string, error) {
 	return "", nil
 }
 
-func (s *TasksService) CompleteTask(cmd *cmdsModel.Command) (string, error) {
+func (s *TasksService) CompleteTask(cmd *commands.Command) (string, error) {
 	title := cmd.Args[0]
 	task, err := s.TasksRepo.FindByTitle(title)
 	if err != nil {
@@ -143,13 +140,13 @@ func (s *TasksService) CompleteTask(cmd *cmdsModel.Command) (string, error) {
 	return task.String(), nil
 }
 
-func (s *TasksService) PrintFullDocs(_ *cmdsModel.Command) (string, error) {
-	fmt.Print(FULL_DOCS)
+func (s *TasksService) PrintFullDocs(_ *commands.Command) (string, error) {
+	fmt.Print(fullDocs)
 
 	return "", nil
 }
 
-func NewTasksService(repo *repositories.TasksRepository) *TasksService {
+func NewTasksService(repo *TasksRepository) *TasksService {
 	return &TasksService{
 		repo,
 	}

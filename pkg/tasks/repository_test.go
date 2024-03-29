@@ -1,16 +1,14 @@
-package repositories
+package tasks
 
 import (
 	"os"
 	"testing"
 
-	"github.com/julian776/Command-Line-Task-Manager/tasks/models"
-	"github.com/julian776/Command-Line-Task-Manager/tasks/repositories/settings"
 	"github.com/stretchr/testify/suite"
 )
 
 const (
-	FILE_PATH = "test_file.json"
+	testRepoFilePath = "test_file.json"
 )
 
 type TaskRepositoryTests struct {
@@ -21,13 +19,13 @@ type TaskRepositoryTests struct {
 
 func TestRepoTasks(t *testing.T) {
 	suite.Run(t, &TaskRepositoryTests{
-		filePath:  FILE_PATH,
+		filePath:  testRepoFilePath,
 		tasksRepo: TasksRepository{},
 	})
 }
 
 func (trs *TaskRepositoryTests) TestSaveTask() {
-	err := trs.tasksRepo.Save(models.Task{})
+	err := trs.tasksRepo.Save(Task{})
 	trs.Nil(err)
 }
 
@@ -40,7 +38,7 @@ func (trs *TaskRepositoryTests) TestFindAll() {
 func (trs *TaskRepositoryTests) TestFindAllErrorNoFile() {
 	wrongFilePath := "fghfghfghgf.json"
 	trs.tasksRepo.settings.FilePath = wrongFilePath
-	//emptyTask := models.Task{}
+	//emptyTask := Task{}
 
 	mapTasks, err := trs.tasksRepo.FindAll()
 	trs.Error(err)
@@ -49,7 +47,7 @@ func (trs *TaskRepositoryTests) TestFindAllErrorNoFile() {
 
 func (trs *TaskRepositoryTests) TestFindByTitle() {
 	taskTitle := "task1"
-	task := models.Task{
+	task := Task{
 		Title: taskTitle,
 	}
 	trs.tasksRepo.Save(task)
@@ -61,7 +59,7 @@ func (trs *TaskRepositoryTests) TestFindByTitle() {
 
 func (trs *TaskRepositoryTests) TestFindByTitleError() {
 	taskTitle := "task1"
-	emptyTask := models.Task{}
+	emptyTask := Task{}
 
 	taskGot, err := trs.tasksRepo.FindByTitle(taskTitle)
 	trs.Error(err)
@@ -69,7 +67,7 @@ func (trs *TaskRepositoryTests) TestFindByTitleError() {
 }
 
 func (trs *TaskRepositoryTests) SetupTest() {
-	settings := settings.Settings{
+	settings := Settings{
 		FilePath: trs.filePath,
 	}
 	trs.tasksRepo = *NewTasksRepository(settings)

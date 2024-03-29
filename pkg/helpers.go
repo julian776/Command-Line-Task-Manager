@@ -1,4 +1,4 @@
-package helpers
+package pkg
 
 import (
 	"bufio"
@@ -6,10 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/julian776/Command-Line-Task-Manager/router"
-	"github.com/julian776/Command-Line-Task-Manager/tasks/repositories"
-	"github.com/julian776/Command-Line-Task-Manager/tasks/repositories/settings"
-	"github.com/julian776/Command-Line-Task-Manager/tasks/services"
+	"github.com/julian776/Command-Line-Task-Manager/pkg/tasks"
 )
 
 func ReadCommand(scanner *bufio.Scanner) string {
@@ -21,8 +18,8 @@ const (
 	loadError = "can not load github.com/julian776/Command-Line-Task-Manager"
 )
 
-func Setup() *router.Router {
-	settings, err := settings.LoadSettings()
+func Setup() *Router {
+	settings, err := tasks.LoadSettings()
 	if err != nil {
 		fmt.Println(loadError)
 	}
@@ -37,12 +34,12 @@ func Setup() *router.Router {
 	}
 
 	// Setup Tasks Repo
-	repo := repositories.NewTasksRepository(settings)
+	repo := tasks.NewTasksRepository(settings)
 
 	// Setup Tasks Service
-	service := services.NewTasksService(repo)
+	service := tasks.NewTasksService(repo)
 	// Setup Router
-	router := router.NewRouter(service)
+	router := NewRouter(service)
 
 	return router
 }

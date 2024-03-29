@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/julian776/Command-Line-Task-Manager/commands"
-	"github.com/julian776/Command-Line-Task-Manager/helpers"
+	"github.com/julian776/Command-Line-Task-Manager/pkg"
+	"github.com/julian776/Command-Line-Task-Manager/pkg/commands"
 )
 
 func main() {
-	router := helpers.Setup()
+	router := pkg.Setup()
 	cmd := commands.BuildCommmand()
 	router.Router(cmd)
 }

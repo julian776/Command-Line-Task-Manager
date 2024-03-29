@@ -1,18 +1,16 @@
-package services
+package tasks
 
 import (
 	"os"
 	"regexp"
 	"testing"
 
-	"github.com/julian776/Command-Line-Task-Manager/commands/models"
-	"github.com/julian776/Command-Line-Task-Manager/tasks/repositories"
-	"github.com/julian776/Command-Line-Task-Manager/tasks/repositories/settings"
+	"github.com/julian776/Command-Line-Task-Manager/pkg/commands"
 	"github.com/stretchr/testify/suite"
 )
 
 const (
-	FILE_PATH = "test_file.json"
+	testServiceFilePath = "test_file.json"
 )
 
 type TaskServiceTests struct {
@@ -23,13 +21,13 @@ type TaskServiceTests struct {
 
 func TestServiceTasks(t *testing.T) {
 	suite.Run(t, &TaskServiceTests{
-		filePath:     FILE_PATH,
+		filePath:     testServiceFilePath,
 		tasksService: &TasksService{},
 	})
 }
 
 func (trs *TaskServiceTests) TestAddTask() {
-	cmd := &models.Command{
+	cmd := &commands.Command{
 		CmdType: "add",
 		Args:    []string{"titleTask", "Desc"},
 	}
@@ -39,7 +37,7 @@ func (trs *TaskServiceTests) TestAddTask() {
 }
 
 func (trs *TaskServiceTests) TestAddTask_InvalidTitle() {
-	cmd := &models.Command{
+	cmd := &commands.Command{
 		CmdType: "add",
 		Args:    []string{"", "Desc"},
 	}
@@ -49,7 +47,7 @@ func (trs *TaskServiceTests) TestAddTask_InvalidTitle() {
 }
 
 func (trs *TaskServiceTests) TestAddTask_InvalidDescription() {
-	cmd := &models.Command{
+	cmd := &commands.Command{
 		CmdType: "add",
 		Args:    []string{"title1"},
 	}
@@ -59,13 +57,13 @@ func (trs *TaskServiceTests) TestAddTask_InvalidDescription() {
 }
 
 func (trs *TaskServiceTests) TestFindTask() {
-	cmdTaskToAdd := &models.Command{
+	cmdTaskToAdd := &commands.Command{
 		CmdType: "add",
 		Args:    []string{"task1", "desc"},
 	}
 	trs.tasksService.AddTask(cmdTaskToAdd)
 
-	cmd := &models.Command{
+	cmd := &commands.Command{
 		CmdType: "show",
 		Args:    []string{"task1"},
 	}
@@ -75,13 +73,13 @@ func (trs *TaskServiceTests) TestFindTask() {
 }
 
 func (trs *TaskServiceTests) TestUpdateDescription() {
-	cmdTaskToAdd := &models.Command{
+	cmdTaskToAdd := &commands.Command{
 		CmdType: "add",
 		Args:    []string{"task1", "desc"},
 	}
 	trs.tasksService.AddTask(cmdTaskToAdd)
 
-	cmd := &models.Command{
+	cmd := &commands.Command{
 		CmdType: "show",
 		Args:    []string{"task1", "new", "desc"},
 	}
@@ -91,13 +89,13 @@ func (trs *TaskServiceTests) TestUpdateDescription() {
 }
 
 func (trs *TaskServiceTests) TestCompleteTask() {
-	cmdTaskToAdd := &models.Command{
+	cmdTaskToAdd := &commands.Command{
 		CmdType: "add",
 		Args:    []string{"task1", "desc"},
 	}
 	trs.tasksService.AddTask(cmdTaskToAdd)
 
-	cmd := &models.Command{
+	cmd := &commands.Command{
 		CmdType: "done",
 		Args:    []string{"task1"},
 	}
@@ -107,7 +105,7 @@ func (trs *TaskServiceTests) TestCompleteTask() {
 }
 
 func (trs *TaskServiceTests) TestFindTaskErrorNoTask() {
-	cmd := &models.Command{
+	cmd := &commands.Command{
 		CmdType: "show",
 		Args:    []string{"task1"},
 	}
@@ -117,14 +115,14 @@ func (trs *TaskServiceTests) TestFindTaskErrorNoTask() {
 }
 
 func (trs *TaskServiceTests) TestLs() {
-	cmd := &models.Command{
+	cmd := &commands.Command{
 		CmdType: "ls",
 	}
 	trs.tasksService.PrintAllTasks(cmd)
 }
 
 func (trs *TaskServiceTests) TestHelp() {
-	cmd := &models.Command{
+	cmd := &commands.Command{
 		CmdType: "help",
 	}
 	strGot, err := trs.tasksService.PrintFullDocs(cmd)
@@ -133,11 +131,11 @@ func (trs *TaskServiceTests) TestHelp() {
 }
 
 func (trs *TaskServiceTests) SetupTest() {
-	settings := settings.Settings{
-		FilePath: FILE_PATH,
+	settings := Settings{
+		FilePath: testServiceFilePath,
 	}
 	// Setup Tasks Repo
-	repo := repositories.NewTasksRepository(settings)
+	repo := NewTasksRepository(settings)
 
 	// Setup Tasks Service
 	trs.tasksService = NewTasksService(repo)

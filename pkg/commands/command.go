@@ -3,12 +3,16 @@ package commands
 import (
 	"flag"
 	"os"
-
-	"github.com/julian776/Command-Line-Task-Manager/commands/models"
 )
 
-func BuildCommmand() *models.Command {
-	cmd := &models.Command{
+type Command struct {
+	CmdType string
+	Args    []string
+	Flags   map[string]string
+}
+
+func BuildCommmand() *Command {
+	cmd := &Command{
 		Flags: map[string]string{},
 	}
 
@@ -32,7 +36,7 @@ func BuildCommmand() *models.Command {
 
 // Adds the flags to the command object.
 // By the moment this is done manually.
-func addFlags(cmd *models.Command) {
+func addFlags(cmd *Command) {
 	filter := flag.String("filter", "uncompleted", "Command-Line-Task-Manager ls (--filter all | uncompleted)")
 
 	cmd.Flags["filter"] = *filter

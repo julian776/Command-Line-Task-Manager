@@ -1,10 +1,10 @@
-package router
+package pkg
 
 import (
 	"fmt"
 
-	"github.com/julian776/Command-Line-Task-Manager/commands/models"
-	"github.com/julian776/Command-Line-Task-Manager/tasks/services"
+	"github.com/julian776/Command-Line-Task-Manager/pkg/commands"
+	"github.com/julian776/Command-Line-Task-Manager/pkg/tasks"
 )
 
 const (
@@ -12,12 +12,12 @@ const (
 )
 
 type Router struct {
-	tasksService *services.TasksService
+	tasksService *tasks.TasksService
 }
 
-type fn func(cmd *models.Command) (string, error)
+type fn func(cmd *commands.Command) (string, error)
 
-func (router *Router) Router(cmd *models.Command) {
+func (router *Router) Router(cmd *commands.Command) {
 	routes := map[string]fn{
 		"init": router.tasksService.Initialize,
 		"help": router.tasksService.PrintFullDocs,
@@ -39,7 +39,7 @@ func (router *Router) Router(cmd *models.Command) {
 	fmt.Println(NOT_COMMAND_MSG + " " + cmd.CmdType)
 }
 
-func NewRouter(service *services.TasksService) *Router {
+func NewRouter(service *tasks.TasksService) *Router {
 	return &Router{
 		service,
 	}
