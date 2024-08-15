@@ -118,12 +118,16 @@ func (s *TasksService) FindTask(cmd *commands.Command) (string, error) {
 	return task.String(), nil
 }
 
-func (s *TasksService) PrintAllTasks(_ *commands.Command) (string, error) {
+func (s *TasksService) PrintAllTasks(cmd *commands.Command) (string, error) {
 	tasks, err := s.TasksRepo.FindAll()
 	if err != nil {
 		return "", err
 	}
 	for _, task := range tasks {
+		if cmd.Flags["filter"] == "uncompleted" && task.IsCompleted {
+			continue
+		}
+
 		fmt.Println(task)
 	}
 	return "", nil

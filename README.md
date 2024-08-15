@@ -42,7 +42,7 @@ The Command-Line Task Manager offers the following commands to help you manage y
 
 1. **ls** - List Tasks
 
-   Use the `ls` command to list all your tasks. This command does not receive any options.
+   Use the `ls` command to list all your tasks. The ls command by default lists uncompleted tasks. To list all tasks, including completed tasks, use the `--filter=all` flag.
 
    Example:
    ```

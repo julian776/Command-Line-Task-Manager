@@ -5,6 +5,10 @@ import (
 	"os"
 )
 
+var (
+	filter = flag.String("filter", "uncompleted", "Command-Line-Task-Manager ls (--filter all | uncompleted)")
+)
+
 type Command struct {
 	CmdType string
 	Args    []string
@@ -16,16 +20,14 @@ func BuildCommmand() *Command {
 		Flags: map[string]string{},
 	}
 
+	addFlags(cmd)
+
 	if len(os.Args) < 2 {
 		return cmd
 	}
 
-	addFlags(cmd)
-	// Must be called after addFlags do not move
-	flag.Parse()
-
-	cmd.CmdType = os.Args[1]
-	cmd.Args = flag.Args()
+	cmd.Args = flag.Args()[1:]
+	cmd.CmdType = flag.Args()[0]
 
 	if len(cmd.Args) > 1 {
 		cmd.Args = cmd.Args[1:]
@@ -37,7 +39,6 @@ func BuildCommmand() *Command {
 // Adds the flags to the command object.
 // By the moment this is done manually.
 func addFlags(cmd *Command) {
-	filter := flag.String("filter", "uncompleted", "Command-Line-Task-Manager ls (--filter all | uncompleted)")
-
+	flag.Parse()
 	cmd.Flags["filter"] = *filter
 }
